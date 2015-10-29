@@ -1,0 +1,38 @@
+<html>
+
+<head>
+<title>Backbone Rest Example</title>
+<link rel="stylesheet" href="app/css/styles.css" /> 
+<link rel="stylesheet" href="app2/css/bootstrap.min.css" /> 
+<link rel="stylesheet" href="app2/css/dataTables.bootstrap.min.css" />
+</head>
+
+<body>
+
+	<div id="header"></div>
+
+	<div id="sidebar"></div>
+
+	<div id="content">
+		<h1>Subject Details</h1>
+	</div>
+	
+	<div id="footer"></div>
+
+	<script src="app/lib/jquery-1.11.2.js"></script>
+	<script src="app/lib/underscore-1.8.2.js"></script>
+	<script src="app/lib/backbone-1.1.2.js"></script>
+	<script src="app/lib/backbone-validation.js"></script>
+
+
+	<script src="app/js/templateManager.js"></script>
+	<script src="app/js/models/subjectModel.js"></script>
+	<script src="app/js/views/header.js"></script>
+	<script src="app/js/views/subjectList.js"></script>
+	<script src="app/js/views/subjectDetail.js"></script>
+	<script src="app/js/router/subjectRouter.js"></script>
+	<script src="app/js/main.js"></script>
+
+
+</body>
+</html>
