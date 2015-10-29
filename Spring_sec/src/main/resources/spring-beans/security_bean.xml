@@ -1,0 +1,62 @@
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+	
+	<http use-expressions="true" auto-config="true" >
+		<custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" />
+	    <intercept-url pattern="/redirect.jsp*" access="permitAll"/>
+	    <intercept-url pattern="/index.jsp*" access="permitAll"/>
+	    <intercept-url pattern="/loginPage.htm" access="permitAll"/>
+	    <intercept-url pattern="/sessionExpired.htm" access="permitAll"/>
+	    <intercept-url pattern="/jsp/login.jsp**" access="permitAll"/>
+	    <intercept-url pattern="/loginfailed*" access="permitAll"/>
+	    <intercept-url pattern="/*" access="permitAll" />
+		<form-login login-page="/redirect.jsp" default-target-url="/login" always-use-default-target="true"	authentication-failure-url="/loginfailed" />
+		<logout invalidate-session="true" logout-success-url="/logout"/>
+		<session-management session-authentication-strategy-ref="sas" />
+	</http>
+	
+	<beans:bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+	
+	<beans:bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+    	<beans:property name="sessionRegistry" ref="sessionRegistry" />
+    	<beans:property name="expiredUrl" value="/redirect.jsp" />
+   	</beans:bean>
+
+  	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+    	<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+    	<beans:property name="maximumSessions" value="1" />
+  	</beans:bean>
+
+   	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+	   
+	<beans:bean id="userDetailsService" class="com.misynss.spring.impl.MyUserDetailService" >
+		<beans:property name="userManagerImpl" ref="userManager"/>
+   	 	<beans:property name="utility" ref="utility"/>	
+	</beans:bean>
+	
+	<!-- <beans:bean id="myUserDetails" class="com.misynss.spring.impl.MyUserDetails" >
+		<beans:constructor-arg value="com.misynss.entity.User"/>
+		<beans:property name="userManagerImpl" ref="userManager"/>
+   	 	<beans:property name="utility" ref="utility"/>	
+	</beans:bean> -->
+	
+	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder">
+        <beans:constructor-arg value="MD5" />
+    </beans:bean>
+
+	<authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref = "userDetailsService">
+        	<password-encoder ref="passwordEncoder"/>
+        </authentication-provider>
+	</authentication-manager> 
+	
+</beans:beans>  
+
+
+
+
+    
+
